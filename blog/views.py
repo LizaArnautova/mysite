@@ -34,6 +34,10 @@ class PostList(generic.ListView):
     paginate_by = 2
 
 
-# class PostDetail(generic.DetailView):
-#     model = Post
-#     template_name = 'post_detail.html'
+def search(request):
+    if request.method == "POST":
+        searched = request.POST.get("searched", False)
+        venues = Post.objects.filter(title__contains=searched)
+        return render(request, "search.html", {'searched': searched, 'venues': venues})
+    else:
+        return render(request, "search.html", {})
